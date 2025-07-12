@@ -13,7 +13,8 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
+  Textarea
 } from "@shared/ui";
 
 import type { TCreateTaskFormSchema, TUpdateTaskFormSchema } from "../lib";
@@ -49,7 +50,7 @@ export const TaskForm = ({ taskForm, className, children, onSubmit }: ITaskFormP
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder='Description' {...field} />
+                <Textarea placeholder='Description' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

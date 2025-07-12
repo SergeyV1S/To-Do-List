@@ -13,7 +13,11 @@ export const TaskCreateForm = () => {
   const { addTask } = useTaskStore();
 
   const createTaskForm = useForm({
-    resolver: zodResolver(createTaskFormSchema)
+    resolver: zodResolver(createTaskFormSchema),
+    defaultValues: {
+      title: "",
+      description: ""
+    }
   });
 
   const handleOnSubmit = (data: TCreateTaskFormSchema) => {

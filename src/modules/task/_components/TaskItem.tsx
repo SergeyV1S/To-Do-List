@@ -23,7 +23,7 @@ export const TaskItem = (props: ITask) => (
       {props.description && <CardDescription>{props.description}</CardDescription>}
     </CardHeader>
     <CardContent className='flex flex-col justify-end'>
-      <div className='flex items-center justify-end gap-1'>
+      <div className='flex flex-wrap items-center justify-end gap-1'>
         <Badge variant={categoryVariants[props.category]}>{props.category}</Badge>
         <Badge variant={priorityVariants[props.priority]}>{props.priority}</Badge>
         <Badge variant={statusVariants[props.status]}>{props.status}</Badge>
