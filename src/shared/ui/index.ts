@@ -5,7 +5,6 @@ export * from "./typography";
 export * from "./label";
 export * from "./form";
 export * from "./input";
-export * from "./dialog";
 export * from "./tooltip";
 export * from "./badge";
 export * from "./textarea";

@@ -1,4 +1,5 @@
 export const PATHS = {
   TASKS: "/",
-  TASKS_INFO: "/task"
+  TASK_INFO: "/task",
+  CREATE_TASK: "/task/new"
 } as const;

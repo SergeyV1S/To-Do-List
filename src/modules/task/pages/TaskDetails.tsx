@@ -49,4 +49,4 @@ const TaskDetailsPage = () => {
   );
 };
 
-export const taskDetailsRoute = createRoute(`${PATHS.TASKS_INFO}/:taskId`, <TaskDetailsPage />);
+export const taskDetailsRoute = createRoute(`${PATHS.TASK_INFO}/:taskId`, <TaskDetailsPage />);

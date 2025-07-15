@@ -7,7 +7,7 @@ import { categoryVariants, priorityVariants, statusVariants } from "../constants
 import type { ITask } from "../types";
 
 export const TaskItem = (props: ITask) => (
-  <Link to={`${PATHS.TASKS_INFO}/${props.id}`}>
+  <Link to={`${PATHS.TASK_INFO}/${props.id}`}>
     <Card className='duration-300 hover:origin-bottom hover:scale-105 hover:rotate-1 hover:shadow-2xl'>
       <CardHeader>
         <CardTitle>{props.title}</CardTitle>
