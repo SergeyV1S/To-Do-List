@@ -10,7 +10,7 @@ import { TaskFilter, TaskList } from "../_components";
 import { useTaskStore } from "../model";
 
 const TasksPage = () => {
-  const { tasks, isLoading, getTasks } = useTaskStore();
+  const { tasks, getTaskLoading, getTasks } = useTaskStore();
 
   useEffect(() => {
     getTasks();
@@ -40,9 +40,9 @@ const TasksPage = () => {
         </TooltipContent>
       </Tooltip>
 
-      {isLoading && <div>Loading...</div>}
+      {getTaskLoading && getTaskLoading && <div>Loading...</div>}
       {tasks.length !== 0 && <TaskList />}
-      {tasks.length === 0 && !isLoading && (
+      {tasks.length === 0 && !getTaskLoading && (
         <div className='bg-accent-foreground rounded-md px-5 py-1.5'>
           <Typography variant='paragraph_14_regular' className='text-primary-foreground'>
             Нет задач

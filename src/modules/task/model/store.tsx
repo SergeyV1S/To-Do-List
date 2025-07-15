@@ -1,12 +1,14 @@
 import { create } from "zustand";
 
-import { getTasks, postCreateTask } from "@shared/api";
+import * as taskApi from "@shared/api";
+import type { TPatchUpdateTaskDto, TPostCreateTaskDto } from "@shared/api";
 import { handleError } from "@shared/helpers";
 
-import type { ITask, TTaskFilters, TUpdateTaskPayload } from "../types";
+import type { ITask, TTaskFilters } from "../types";
 
 interface ITaskState {
-  isLoading?: boolean;
+  getTaskLoading?: boolean;
+  mutationTaskLoading?: boolean;
   taskFilters?: TTaskFilters;
   tasks: ITask[];
   filteredTasks: ITask[];
@@ -14,11 +16,11 @@ interface ITaskState {
 }
 
 interface ITaskActions {
-  addTask: (newTask: Omit<ITask, "uid">) => Promise<void>;
-  deleteTask: (taskId: ITask["uid"]) => void;
-  updateTask: (payload: TUpdateTaskPayload) => void;
+  addTask: (newTask: TPostCreateTaskDto) => Promise<void>;
+  deleteTask: (taskUid: ITask["uid"]) => Promise<void>;
+  updateTask: (payload: TPatchUpdateTaskDto) => Promise<void>;
   filterTask: (filters: TTaskFilters) => void;
-  setCurrentTask?: (taskId: ITask["uid"]) => void;
+  getCurrentTask: (taskUid: ITask["uid"]) => void;
   getTasks: () => void;
 }
 
@@ -28,42 +30,61 @@ const taskStore = create<TTaskStore>((set, get) => ({
   tasks: [],
   filteredTasks: [],
   addTask: async (newTask) => {
-    set({ isLoading: true });
+    set({ mutationTaskLoading: true });
     try {
-      await postCreateTask(newTask);
+      await taskApi.postCreateTask(newTask);
     } catch (error) {
       handleError(error);
     } finally {
-      set({ isLoading: false });
+      set({ mutationTaskLoading: false });
     }
   },
   getTasks: async () => {
-    set({ isLoading: true });
+    set({ getTaskLoading: true });
     try {
-      const tasks = (await getTasks()).data.message;
+      const tasks = (await taskApi.getTasks()).data.message;
 
       set({ tasks });
     } catch (error) {
       handleError(error);
     } finally {
-      set({ isLoading: false });
+      set({ getTaskLoading: false });
     }
   },
-  updateTask: (payload) => {
-    const { tasks } = get();
+  getCurrentTask: async (taskUid) => {
+    set({ getTaskLoading: true });
+    try {
+      const currentTask = (await taskApi.getTaskByUid(taskUid)).data.message;
 
-    const updatedTasks = tasks.map((task) =>
-      task.uid === payload.uid ? { ...task, ...payload } : task
-    );
-
-    set({ tasks: updatedTasks, filteredTasks: updatedTasks });
+      set({ currentTask });
+    } catch (error) {
+      handleError(error);
+    } finally {
+      set({ getTaskLoading: false });
+    }
   },
-  deleteTask: (taskId) => {
-    const { tasks } = get();
-
-    const newTasks = tasks.filter((task) => task.uid !== taskId);
-
-    set({ tasks: newTasks, filteredTasks: newTasks });
+  updateTask: async (payload) => {
+    set({ mutationTaskLoading: true });
+    try {
+      await taskApi.patchUpdateTask(payload);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      set({ mutationTaskLoading: false });
+    }
+  },
+  deleteTask: async (taskUid) => {
+    set({ mutationTaskLoading: true });
+    try {
+      const { getTasks } = get();
+      await taskApi.deleteTask(taskUid).then(() => {
+        getTasks();
+      });
+    } catch (error) {
+      handleError(error);
+    } finally {
+      set({ mutationTaskLoading: false });
+    }
   },
   filterTask: (filters) => {
     const { tasks, taskFilters } = get();

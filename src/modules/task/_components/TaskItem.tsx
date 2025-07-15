@@ -19,7 +19,7 @@ import type { ITask } from "../types";
 
 interface ITaskItemProps {
   task: ITask;
-  deleteTask: (taskId: ITask["uid"]) => void;
+  deleteTask: (taskUid: ITask["uid"]) => void;
 }
 
 export const TaskItem = ({ task, deleteTask }: ITaskItemProps) => (
@@ -38,7 +38,7 @@ export const TaskItem = ({ task, deleteTask }: ITaskItemProps) => (
       </CardContent>
       <CardFooter className='flex justify-end'>
         <Typography variant='paragraph_14_regular' className='opacity-50'>
-          16.09.2004
+          {task.createDate?.getDate()}
         </Typography>
       </CardFooter>
       <div className='absolute top-4 right-4 hidden group-hover:block'>

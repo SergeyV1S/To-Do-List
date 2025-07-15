@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +22,7 @@ import {
 
 import type { TTaskFormSchema } from "../lib";
 import { taskFormSchema } from "../lib";
+import { useTaskStore } from "../model";
 
 interface ITaskFormProps {
   defaultValues: Partial<TTaskFormSchema>;
@@ -28,6 +30,8 @@ interface ITaskFormProps {
 }
 
 export const TaskForm = ({ defaultValues, handleOnSubmit }: ITaskFormProps) => {
+  const { mutationTaskLoading } = useTaskStore();
+
   const taskForm = useForm({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
@@ -43,6 +47,10 @@ export const TaskForm = ({ defaultValues, handleOnSubmit }: ITaskFormProps) => {
   const handleCancelTask = () => {
     taskForm.reset(defaultValues);
   };
+
+  useEffect(() => {
+    handleCancelTask();
+  }, [defaultValues]);
 
   const submitButtonDisabled = !Object.values(taskForm.formState.dirtyFields).some(Boolean);
 
@@ -148,7 +156,7 @@ export const TaskForm = ({ defaultValues, handleOnSubmit }: ITaskFormProps) => {
         <div className='flex flex-col items-center justify-center gap-4'>
           <Button
             type='submit'
-            disabled={submitButtonDisabled}
+            disabled={submitButtonDisabled || mutationTaskLoading}
             className='w-full md:w-1/3'
             size='lg'
           >

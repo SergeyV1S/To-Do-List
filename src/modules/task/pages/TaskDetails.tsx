@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
 import { PATHS } from "@shared/constants";
@@ -12,21 +12,24 @@ import type { TTaskFormSchema } from "../lib";
 import { useTaskStore } from "../model";
 
 interface ITaskDetailsPageParams {
-  taskId: string;
+  taskUid: string;
 }
 
 const TaskDetailsPage = () => {
-  const { tasks, currentTask, setCurrentTask, updateTask } = useTaskStore();
-  const { taskId } = useParams() as unknown as ITaskDetailsPageParams;
+  const { getTaskLoading, currentTask, getCurrentTask, updateTask } = useTaskStore();
+  const { taskUid } = useParams() as unknown as ITaskDetailsPageParams;
+  const navigate = useNavigate();
 
   const handleOnSubmit = (data: TTaskFormSchema) => {
-    updateTask({ uid: +taskId, ...data });
-    toast.success("Задача изменена!");
+    updateTask({ uid: taskUid, ...data }).then(() => {
+      navigate(PATHS.TASKS);
+      toast.success("Задача успешно изменена!");
+    });
   };
 
   useEffect(() => {
-    setCurrentTask && setCurrentTask(+taskId);
-  }, [taskId, tasks]);
+    getCurrentTask(taskUid);
+  }, [taskUid]);
 
   return (
     <div className='space-y-8'>
@@ -46,10 +49,10 @@ const TaskDetailsPage = () => {
       >
         <ArrowLeftIcon size={16} /> Назад
       </Link>
-      {currentTask && (
-        <TaskForm key='update-form' defaultValues={currentTask} handleOnSubmit={handleOnSubmit} />
+      {currentTask && !getTaskLoading && (
+        <TaskForm defaultValues={currentTask} handleOnSubmit={handleOnSubmit} />
       )}
-      {!currentTask && (
+      {!currentTask && getTaskLoading && (
         <Typography variant='paragraph_16_medium' className='text-center'>
           Loading...
         </Typography>
@@ -58,4 +61,4 @@ const TaskDetailsPage = () => {
   );
 };
 
-export const taskDetailsRoute = createRoute(`${PATHS.TASK_INFO}/:taskId`, <TaskDetailsPage />);
+export const taskDetailsRoute = createRoute(`${PATHS.TASK_INFO}/:taskUid`, <TaskDetailsPage />);

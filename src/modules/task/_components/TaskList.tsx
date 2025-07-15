@@ -7,9 +7,10 @@ import { TaskItem } from "./TaskItem";
 export const TaskList = () => {
   const { tasks, deleteTask } = useTaskStore();
 
-  const handleTaskDelete = (taskId: ITask["uid"]) => {
-    deleteTask(taskId);
-    toast.success("Задача удалена!");
+  const handleTaskDelete = (taskUid: ITask["uid"]) => {
+    deleteTask(taskUid).then(() => {
+      toast.success("Задача удалена!");
+    });
   };
 
   return (
