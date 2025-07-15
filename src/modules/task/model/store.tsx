@@ -1,86 +1,73 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { create } from "zustand";
 
 import { defaultTasks } from "../constants";
 import type { ITask, TTaskFilters, TUpdateTaskPayload } from "../types";
 
-type TTaskProviderState = {
+interface ITaskState {
+  taskFilters?: TTaskFilters;
   tasks: ITask[];
+  filteredTasks: ITask[];
+  currentTask?: ITask;
+}
+
+interface ITaskActions {
   addTask: (newTask: Omit<ITask, "id">) => void;
   deleteTask: (taskId: ITask["id"]) => void;
   updateTask: (payload: TUpdateTaskPayload) => void;
   filterTask: (filters: TTaskFilters) => void;
-  getTask?: (taskId: ITask["id"]) => ITask;
-};
+  setCurrentTask?: (taskId: ITask["id"]) => void;
+}
 
-const initialState: TTaskProviderState = {
+type TTaskStore = ITaskState & ITaskActions;
+
+const taskStore = create<TTaskStore>((set, get) => ({
   tasks: defaultTasks,
-  addTask: () => null,
-  deleteTask: () => null,
-  updateTask: () => null,
-  filterTask: () => null
-};
-
-const TaskContext = createContext<TTaskProviderState>(initialState);
-
-export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
-  const [tasks, setTasks] = useState<ITask[]>(defaultTasks);
-  const [filteredTasks, setFilteredTasks] = useState<ITask[]>(defaultTasks);
-  const [taskFilters, setTaskFilters] = useState<TTaskFilters>();
-
-  const addTask = (newTask: Omit<ITask, "id">) => {
+  filteredTasks: defaultTasks,
+  addTask: (newTask) => {
+    const { tasks } = get();
     const newTaskWithId = {
       id: tasks.length + 1,
       ...newTask
     };
-    setTasks((prev) => [newTaskWithId, ...prev]);
-  };
 
-  const deleteTask = (taskId: ITask["id"]) => {
-    setTasks((prev) => prev.filter((task) => task.id !== taskId));
-  };
+    set({ tasks: [newTaskWithId, ...tasks], filteredTasks: [newTaskWithId, ...tasks] });
+  },
+  setCurrentTask: (taskId) => {
+    const { tasks } = get();
+    const currentTask = tasks.filter((task) => task.id === taskId)[0];
 
-  const updateTask = (payload: TUpdateTaskPayload) => {
-    setTasks((prev) =>
-      prev.map((task) => (task.id === payload.id ? { ...task, ...payload } : task))
+    set({ currentTask });
+  },
+  updateTask: (payload) => {
+    const { tasks } = get();
+
+    const updatedTasks = tasks.map((task) =>
+      task.id === payload.id ? { ...task, ...payload } : task
     );
-  };
 
-  const filterTask = (filters: TTaskFilters) => {
-    setTaskFilters((prev) => ({ ...prev, ...filters }));
-  };
+    set({ tasks: updatedTasks, filteredTasks: updatedTasks });
+  },
+  deleteTask: (taskId) => {
+    const { tasks } = get();
 
-  const getTask = (taskId: ITask["id"]) => tasks.filter((task) => task.id === taskId)[0];
+    const newTasks = tasks.filter((task) => task.id !== taskId);
 
-  useEffect(() => {
-    if (!taskFilters) {
-      setFilteredTasks(tasks);
-      return;
-    }
+    set({ tasks: newTasks, filteredTasks: newTasks });
+  },
+  filterTask: (filters) => {
+    const { tasks, taskFilters } = get();
+    const updatedFilters = { ...taskFilters, ...filters };
 
     const tasksByFilters = tasks.filter((task) => {
-      const statusMatch = !taskFilters.status || task.status === taskFilters.status;
-      const priorityMatch = !taskFilters.priority || task.priority === taskFilters.priority;
-      const categoryMatch = !taskFilters.category || task.category === taskFilters.category;
+      const statusMatch = !updatedFilters?.status || task.status === updatedFilters.status;
+      const priorityMatch = !updatedFilters?.priority || task.priority === updatedFilters.priority;
+      const categoryMatch = !updatedFilters?.category || task.category === updatedFilters.category;
 
       return statusMatch && priorityMatch && categoryMatch;
     });
 
-    setFilteredTasks(tasksByFilters);
-  }, [taskFilters, tasks]);
+    set({ taskFilters: updatedFilters, filteredTasks: tasksByFilters });
+  }
+}));
 
-  return (
-    <TaskContext.Provider
-      value={{ tasks: filteredTasks, addTask, deleteTask, updateTask, filterTask, getTask }}
-    >
-      {children}
-    </TaskContext.Provider>
-  );
-};
-
-export const useTaskStore = () => {
-  const context = useContext(TaskContext);
-
-  if (!context) throw new Error("А где контекст броу?");
-
-  return context;
-};
+export const useTaskStore = taskStore;

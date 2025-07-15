@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@shared/ui";
 
-import { type TCreateTaskFormSchema, createTaskFormSchema } from "../lib";
+import type { TCreateTaskFormSchema } from "../lib";
+import { createTaskFormSchema } from "../lib";
 import { useTaskStore } from "../model";
 import { TaskForm } from "./TaskForm";
 

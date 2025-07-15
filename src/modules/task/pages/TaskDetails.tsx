@@ -1,4 +1,5 @@
 import { ArrowLeftIcon } from "lucide-react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 
 import { PATHS } from "@shared/constants";
@@ -13,10 +14,12 @@ interface ITaskDetailsPageParams {
 }
 
 const TaskDetailsPage = () => {
-  const { getTask } = useTaskStore();
+  const { currentTask, setCurrentTask } = useTaskStore();
   const { taskId } = useParams() as unknown as ITaskDetailsPageParams;
 
-  const task = getTask && getTask(+taskId);
+  useEffect(() => {
+    setCurrentTask && setCurrentTask(+taskId);
+  }, [taskId]);
 
   return (
     <div className='space-y-8'>
@@ -36,8 +39,8 @@ const TaskDetailsPage = () => {
       >
         <ArrowLeftIcon size={16} /> Назад
       </Link>
-      {task && <TaskUpdateForm {...task} />}
-      {!task && (
+      {currentTask && <TaskUpdateForm {...currentTask} />}
+      {!currentTask && (
         <Typography variant='paragraph_16_medium' className='text-center'>
           Loading...
         </Typography>

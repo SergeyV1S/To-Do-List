@@ -1,14 +1,17 @@
 import * as React from "react";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, XIcon } from "lucide-react";
 
 import * as SelectPrimitive from "@radix-ui/react-select";
 
 import { cn } from "@shared/lib";
 
+import { Button } from "./button";
 import { typographyVariants } from "./typography";
 
 const Select = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) => (
-  <SelectPrimitive.Root data-slot='select' {...props} />
+  <div className='relative'>
+    <SelectPrimitive.Root data-slot='select' {...props} />
+  </div>
 );
 
 const SelectGroup = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) => (
@@ -147,6 +150,25 @@ const SelectScrollDownButton = ({
   </SelectPrimitive.ScrollDownButton>
 );
 
+interface ICancelSelectProps extends React.ComponentProps<"button"> {
+  selectValue: any;
+}
+
+const CancelSelect = ({ className, selectValue, ...props }: ICancelSelectProps) => (
+  <>
+    {selectValue && (
+      <Button
+        variant='destructive'
+        size='small_icon'
+        className={cn("absolute top-1/2 right-3 -translate-y-1/2", className)}
+        {...props}
+      >
+        <XIcon className='size-3' />
+      </Button>
+    )}
+  </>
+);
+
 export {
   Select,
   SelectContent,
@@ -157,5 +179,6 @@ export {
   SelectScrollUpButton,
   SelectSeparator,
   SelectTrigger,
-  SelectValue
+  SelectValue,
+  CancelSelect
 };
