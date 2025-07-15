@@ -160,7 +160,7 @@ const CancelSelect = ({ className, selectValue, ...props }: ICancelSelectProps) 
       <Button
         variant='destructive'
         size='small_icon'
-        className={cn("absolute top-1/2 right-3 -translate-y-1/2", className)}
+        className={cn("!absolute top-1/2 right-3 -translate-y-1/2", className)}
         {...props}
       >
         <XIcon className='size-3' />

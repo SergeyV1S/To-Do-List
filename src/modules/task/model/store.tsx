@@ -11,7 +11,6 @@ interface ITaskState {
   mutationTaskLoading?: boolean;
   taskFilters?: TTaskFilters;
   tasks: ITask[];
-  filteredTasks: ITask[];
   currentTask?: ITask;
 }
 
@@ -19,9 +18,9 @@ interface ITaskActions {
   addTask: (newTask: TPostCreateTaskDto) => Promise<void>;
   deleteTask: (taskUid: ITask["uid"]) => Promise<void>;
   updateTask: (payload: TPatchUpdateTaskDto) => Promise<void>;
-  filterTask: (filters: TTaskFilters) => void;
   getCurrentTask: (taskUid: ITask["uid"]) => void;
   getTasks: () => void;
+  setFilters: (filter: TTaskFilters) => void;
 }
 
 type TTaskStore = ITaskState & ITaskActions;
@@ -42,7 +41,9 @@ const taskStore = create<TTaskStore>((set, get) => ({
   getTasks: async () => {
     set({ getTaskLoading: true });
     try {
-      const tasks = (await taskApi.getTasks()).data.message;
+      const { taskFilters } = get();
+
+      const tasks = (await taskApi.getTasks(taskFilters)).data.message;
 
       set({ tasks });
     } catch (error) {
@@ -86,19 +87,9 @@ const taskStore = create<TTaskStore>((set, get) => ({
       set({ mutationTaskLoading: false });
     }
   },
-  filterTask: (filters) => {
-    const { tasks, taskFilters } = get();
-    const updatedFilters = { ...taskFilters, ...filters };
-
-    const tasksByFilters = tasks.filter((task) => {
-      const statusMatch = !updatedFilters?.status || task.status === updatedFilters.status;
-      const priorityMatch = !updatedFilters?.priority || task.priority === updatedFilters.priority;
-      const categoryMatch = !updatedFilters?.category || task.category === updatedFilters.category;
-
-      return statusMatch && priorityMatch && categoryMatch;
-    });
-
-    set({ taskFilters: updatedFilters, filteredTasks: tasksByFilters });
+  setFilters: (filters) => {
+    const { taskFilters } = get();
+    set({ taskFilters: { ...taskFilters, ...filters } });
   }
 }));
 

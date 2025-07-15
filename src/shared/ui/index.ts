@@ -8,3 +8,5 @@ export * from "./input";
 export * from "./tooltip";
 export * from "./badge";
 export * from "./textarea";
+export * from "./search-input";
+export * from "./spinner";

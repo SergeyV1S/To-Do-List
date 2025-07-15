@@ -156,7 +156,8 @@ export const TaskForm = ({ defaultValues, handleOnSubmit }: ITaskFormProps) => {
         <div className='flex flex-col items-center justify-center gap-4'>
           <Button
             type='submit'
-            disabled={submitButtonDisabled || mutationTaskLoading}
+            isLoading={mutationTaskLoading}
+            disabled={submitButtonDisabled}
             className='w-full md:w-1/3'
             size='lg'
           >

@@ -4,17 +4,24 @@ import { Link } from "react-router";
 
 import { PATHS } from "@shared/constants";
 import { createRoute } from "@shared/lib";
-import { Tooltip, TooltipContent, TooltipTrigger, Typography, buttonVariants } from "@shared/ui";
+import {
+  Spinner,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  Typography,
+  buttonVariants
+} from "@shared/ui";
 
 import { TaskFilter, TaskList } from "../_components";
 import { useTaskStore } from "../model";
 
 const TasksPage = () => {
-  const { tasks, getTaskLoading, getTasks } = useTaskStore();
+  const { tasks, taskFilters, getTaskLoading, getTasks } = useTaskStore();
 
   useEffect(() => {
     getTasks();
-  }, []);
+  }, [taskFilters]);
 
   return (
     <main className='relative space-y-8'>
@@ -27,7 +34,7 @@ const TasksPage = () => {
       </Typography>
       <TaskFilter />
       <Tooltip>
-        <TooltipTrigger asChild className='absolute top-22 right-0'>
+        <TooltipTrigger asChild className='!absolute top-[157px] right-0'>
           <Link
             to={PATHS.CREATE_TASK}
             className={buttonVariants({ variant: "ghost", size: "icon" })}
@@ -40,13 +47,16 @@ const TasksPage = () => {
         </TooltipContent>
       </Tooltip>
 
-      {getTaskLoading && getTaskLoading && <div>Loading...</div>}
-      {tasks.length !== 0 && <TaskList />}
+      {getTaskLoading && <Spinner className='top-[200%]' />}
+
+      <TaskList />
       {tasks.length === 0 && !getTaskLoading && (
-        <div className='bg-accent-foreground rounded-md px-5 py-1.5'>
-          <Typography variant='paragraph_14_regular' className='text-primary-foreground'>
-            Нет задач
-          </Typography>
+        <div className='flex items-center justify-center'>
+          <div className='bg-accent-foreground rounded-md px-5 py-1.5'>
+            <Typography variant='paragraph_14_regular' className='text-primary-foreground'>
+              Нет задач
+            </Typography>
+          </div>
         </div>
       )}
     </main>

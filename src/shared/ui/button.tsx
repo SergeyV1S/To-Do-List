@@ -5,8 +5,10 @@ import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@shared/lib";
 
+import { Spinner } from "./spinner";
+
 const buttonVariants = cva(
-  "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -34,22 +36,31 @@ const buttonVariants = cva(
   }
 );
 
+interface IButtonProps extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> {
+  isLoading?: boolean;
+  asChild?: boolean;
+}
+
 const Button = ({
   className,
   variant,
+  children,
+  isLoading,
+  disabled,
   size,
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) => {
+}: IButtonProps) => {
   const Comp = asChild ? Slot : "button";
+
+  const slot = isLoading ? <Spinner /> : children;
 
   return (
     <Comp
       data-slot='button'
       className={cn(buttonVariants({ variant, size, className }))}
+      disabled={disabled || isLoading}
+      children={slot}
       {...props}
     />
   );

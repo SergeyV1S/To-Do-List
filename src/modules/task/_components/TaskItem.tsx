@@ -2,6 +2,7 @@ import { TrashIcon } from "lucide-react";
 import { Link } from "react-router";
 
 import { PATHS } from "@shared/constants";
+import { formatDate } from "@shared/helpers";
 import {
   Badge,
   Button,
@@ -38,7 +39,7 @@ export const TaskItem = ({ task, deleteTask }: ITaskItemProps) => (
       </CardContent>
       <CardFooter className='flex justify-end'>
         <Typography variant='paragraph_14_regular' className='opacity-50'>
-          {task.createDate?.getDate()}
+          {formatDate(task.createdDate)}
         </Typography>
       </CardFooter>
       <div className='absolute top-4 right-4 hidden group-hover:block'>
