@@ -39,7 +39,7 @@ const CardDescription = ({ className, ...props }: React.ComponentProps<"div">) =
     data-slot='card-description'
     className={cn(
       typographyVariants({ variant: "paragraph_14_regular" }),
-      "text-muted-foreground line-clamp-3 pt-2",
+      "text-muted-foreground line-clamp-6 pt-2",
       className
     )}
     {...props}

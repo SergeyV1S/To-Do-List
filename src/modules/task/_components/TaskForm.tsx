@@ -45,19 +45,6 @@ export const TaskForm = ({ taskForm, className, children, onSubmit }: ITaskFormP
         />
         <FormField
           control={taskForm.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea placeholder='Description' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={taskForm.control}
           name='priority'
           render={({ field }) => (
             <FormItem>
@@ -120,6 +107,19 @@ export const TaskForm = ({ taskForm, className, children, onSubmit }: ITaskFormP
                   <SelectItem value='Done'>Done</SelectItem>
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={taskForm.control}
+          name='description'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea placeholder='Description' {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
