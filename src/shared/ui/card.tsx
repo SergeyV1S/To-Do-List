@@ -8,7 +8,7 @@ const Card = ({ className, ...props }: React.ComponentProps<"div">) => (
   <div
     data-slot='card'
     className={cn(
-      "bg-card text-card-foreground flex h-full min-h-64 w-64 flex-col gap-6 rounded-xl border py-6 shadow-sm",
+      "bg-card text-card-foreground flex h-full min-h-44 flex-col gap-6 rounded-xl border py-6 shadow-sm",
       className
     )}
     {...props}
@@ -29,7 +29,11 @@ const CardHeader = ({ className, ...props }: React.ComponentProps<"div">) => (
 const CardTitle = ({ className, ...props }: React.ComponentProps<"div">) => (
   <div
     data-slot='card-title'
-    className={cn("truncate", typographyVariants({ variant: "paragraph_16_medium" }), className)}
+    className={cn(
+      "line-clamp-2 max-w-[90%]",
+      typographyVariants({ variant: "paragraph_16_medium" }),
+      className
+    )}
     {...props}
   />
 );
@@ -39,7 +43,7 @@ const CardDescription = ({ className, ...props }: React.ComponentProps<"div">) =
     data-slot='card-description'
     className={cn(
       typographyVariants({ variant: "paragraph_14_regular" }),
-      "text-muted-foreground line-clamp-6 pt-2",
+      "text-muted-foreground line-clamp-4 pt-2",
       className
     )}
     {...props}

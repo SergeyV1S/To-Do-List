@@ -22,7 +22,7 @@ export const TaskFilter = () => {
   };
 
   return (
-    <div aria-labelledby='filters' className='flex items-center justify-center'>
+    <div aria-labelledby='filters' className='flex items-center justify-between'>
       <div className='flex items-center gap-6 max-sm:flex-col'>
         <Select
           value={taskFilters?.priority ?? ""}

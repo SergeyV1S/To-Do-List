@@ -1,9 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { PATHS } from "@shared/constants";
 import {
   Button,
   Form,
@@ -26,13 +24,10 @@ import { taskFormSchema } from "../lib";
 
 interface ITaskFormProps {
   defaultValues: Partial<TTaskFormSchema>;
-  children?: React.ReactNode;
   handleOnSubmit: (data: TTaskFormSchema) => void;
 }
 
-export const TaskForm = ({ children, defaultValues, handleOnSubmit }: ITaskFormProps) => {
-  const navigate = useNavigate();
-
+export const TaskForm = ({ defaultValues, handleOnSubmit }: ITaskFormProps) => {
   const taskForm = useForm({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
@@ -43,8 +38,10 @@ export const TaskForm = ({ children, defaultValues, handleOnSubmit }: ITaskFormP
 
   const onSubmit = (data: TTaskFormSchema) => {
     handleOnSubmit(data);
-    navigate(PATHS.TASKS);
-    taskForm.reset(data);
+  };
+
+  const handleCancelTask = () => {
+    taskForm.reset(defaultValues);
   };
 
   const submitButtonDisabled = !Object.values(taskForm.formState.dirtyFields).some(Boolean);
@@ -72,7 +69,7 @@ export const TaskForm = ({ children, defaultValues, handleOnSubmit }: ITaskFormP
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Priority</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder='Change priority' />
@@ -94,7 +91,7 @@ export const TaskForm = ({ children, defaultValues, handleOnSubmit }: ITaskFormP
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder='Change category' />
@@ -118,7 +115,7 @@ export const TaskForm = ({ children, defaultValues, handleOnSubmit }: ITaskFormP
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Status</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder='Change status' />
@@ -157,7 +154,15 @@ export const TaskForm = ({ children, defaultValues, handleOnSubmit }: ITaskFormP
           >
             Save
           </Button>
-          {children}
+          <Button
+            type='button'
+            variant='outline'
+            className='w-full md:w-1/3'
+            size='lg'
+            onClick={handleCancelTask}
+          >
+            Cancel
+          </Button>
         </div>
       </form>
     </Form>

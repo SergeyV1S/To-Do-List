@@ -1,9 +1,12 @@
 import { create } from "zustand";
 
-import { defaultTasks } from "../constants";
+import { getTasks, postCreateTask } from "@shared/api";
+import { handleError } from "@shared/helpers";
+
 import type { ITask, TTaskFilters, TUpdateTaskPayload } from "../types";
 
 interface ITaskState {
+  isLoading?: boolean;
   taskFilters?: TTaskFilters;
   tasks: ITask[];
   filteredTasks: ITask[];
@@ -11,38 +14,46 @@ interface ITaskState {
 }
 
 interface ITaskActions {
-  addTask: (newTask: Omit<ITask, "id">) => void;
-  deleteTask: (taskId: ITask["id"]) => void;
+  addTask: (newTask: Omit<ITask, "uid">) => Promise<void>;
+  deleteTask: (taskId: ITask["uid"]) => void;
   updateTask: (payload: TUpdateTaskPayload) => void;
   filterTask: (filters: TTaskFilters) => void;
-  setCurrentTask?: (taskId: ITask["id"]) => void;
+  setCurrentTask?: (taskId: ITask["uid"]) => void;
+  getTasks: () => void;
 }
 
 type TTaskStore = ITaskState & ITaskActions;
 
 const taskStore = create<TTaskStore>((set, get) => ({
-  tasks: defaultTasks,
-  filteredTasks: defaultTasks,
-  addTask: (newTask) => {
-    const { tasks } = get();
-    const newTaskWithId = {
-      id: tasks.length + 1,
-      ...newTask
-    };
-
-    set({ tasks: [newTaskWithId, ...tasks], filteredTasks: [newTaskWithId, ...tasks] });
+  tasks: [],
+  filteredTasks: [],
+  addTask: async (newTask) => {
+    set({ isLoading: true });
+    try {
+      await postCreateTask(newTask);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      set({ isLoading: false });
+    }
   },
-  setCurrentTask: (taskId) => {
-    const { tasks } = get();
-    const currentTask = tasks.filter((task) => task.id === taskId)[0];
+  getTasks: async () => {
+    set({ isLoading: true });
+    try {
+      const tasks = (await getTasks()).data.message;
 
-    set({ currentTask });
+      set({ tasks });
+    } catch (error) {
+      handleError(error);
+    } finally {
+      set({ isLoading: false });
+    }
   },
   updateTask: (payload) => {
     const { tasks } = get();
 
     const updatedTasks = tasks.map((task) =>
-      task.id === payload.id ? { ...task, ...payload } : task
+      task.uid === payload.uid ? { ...task, ...payload } : task
     );
 
     set({ tasks: updatedTasks, filteredTasks: updatedTasks });
@@ -50,7 +61,7 @@ const taskStore = create<TTaskStore>((set, get) => ({
   deleteTask: (taskId) => {
     const { tasks } = get();
 
-    const newTasks = tasks.filter((task) => task.id !== taskId);
+    const newTasks = tasks.filter((task) => task.uid !== taskId);
 
     set({ tasks: newTasks, filteredTasks: newTasks });
   },

@@ -1,22 +1,21 @@
-import { Typography } from "@shared/ui";
+import { toast } from "sonner";
 
 import { useTaskStore } from "../model";
+import type { ITask } from "../types";
 import { TaskItem } from "./TaskItem";
 
 export const TaskList = () => {
-  const { filteredTasks } = useTaskStore();
+  const { tasks, deleteTask } = useTaskStore();
+
+  const handleTaskDelete = (taskId: ITask["uid"]) => {
+    deleteTask(taskId);
+    toast.success("Задача удалена!");
+  };
 
   return (
-    <section className='flex flex-wrap justify-center gap-6'>
-      {filteredTasks.length === 0 && (
-        <div className='bg-accent-foreground rounded-md px-5 py-1.5'>
-          <Typography variant='paragraph_14_regular' className='text-primary-foreground'>
-            Нет задач
-          </Typography>
-        </div>
-      )}
-      {filteredTasks.map((task) => (
-        <TaskItem key={task.id} {...task} />
+    <section className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
+      {tasks.map((task) => (
+        <TaskItem key={task.uid} task={task} deleteTask={handleTaskDelete} />
       ))}
     </section>
   );

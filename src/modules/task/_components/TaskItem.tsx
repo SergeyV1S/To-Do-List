@@ -1,25 +1,58 @@
+import { TrashIcon } from "lucide-react";
 import { Link } from "react-router";
 
 import { PATHS } from "@shared/constants";
-import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@shared/ui";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Typography
+} from "@shared/ui";
 
 import { categoryVariants, priorityVariants, statusVariants } from "../constants";
 import type { ITask } from "../types";
 
-export const TaskItem = (props: ITask) => (
-  <Link to={`${PATHS.TASK_INFO}/${props.id}`}>
-    <Card className='duration-300 hover:origin-bottom hover:scale-105 hover:rotate-1 hover:shadow-2xl'>
+interface ITaskItemProps {
+  task: ITask;
+  deleteTask: (taskId: ITask["uid"]) => void;
+}
+
+export const TaskItem = ({ task, deleteTask }: ITaskItemProps) => (
+  <Link to={`${PATHS.TASK_INFO}/${task.uid}`} className='w-full'>
+    <Card className='group relative duration-300 hover:origin-bottom hover:scale-105 hover:rotate-1 hover:shadow-2xl'>
       <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
-        {props.description && <CardDescription>{props.description}</CardDescription>}
+        <CardTitle>{task.title}</CardTitle>
+        {task.description && <CardDescription>{task.description}</CardDescription>}
       </CardHeader>
       <CardContent className='flex flex-col justify-end'>
-        <div className='flex flex-wrap items-center justify-end gap-1'>
-          <Badge variant={categoryVariants[props.category]}>{props.category}</Badge>
-          <Badge variant={priorityVariants[props.priority]}>{props.priority}</Badge>
-          <Badge variant={statusVariants[props.status]}>{props.status}</Badge>
+        <div className='flex flex-wrap items-center justify-start gap-1'>
+          <Badge variant={categoryVariants[task.category]}>{task.category}</Badge>
+          <Badge variant={priorityVariants[task.priority]}>{task.priority}</Badge>
+          <Badge variant={statusVariants[task.status]}>{task.status}</Badge>
         </div>
       </CardContent>
+      <CardFooter className='flex justify-end'>
+        <Typography variant='paragraph_14_regular' className='opacity-50'>
+          16.09.2004
+        </Typography>
+      </CardFooter>
+      <div className='absolute top-4 right-4 hidden group-hover:block'>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            deleteTask(task.uid);
+          }}
+          variant='destructive'
+          size='icon'
+        >
+          <TrashIcon />
+        </Button>
+      </div>
     </Card>
   </Link>
 );

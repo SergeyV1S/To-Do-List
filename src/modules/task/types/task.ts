@@ -1,5 +1,5 @@
 export interface ITask {
-  id: number;
+  uid: number;
   title: string;
   description?: string;
   category: TCategory;
@@ -13,6 +13,6 @@ export type TStatus = "To Do" | "In Progress" | "Done";
 
 export type TPriority = "Low" | "Medium" | "High";
 
-export type TUpdateTaskPayload = Partial<Omit<ITask, "id">> & Pick<ITask, "id">;
+export type TUpdateTaskPayload = Partial<Omit<ITask, "id">> & Pick<ITask, "uid">;
 
 export type TTaskFilters = Partial<Pick<ITask, "category" | "priority" | "status">>;

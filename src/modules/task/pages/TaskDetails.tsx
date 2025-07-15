@@ -1,12 +1,14 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router";
+import { toast } from "sonner";
 
 import { PATHS } from "@shared/constants";
 import { cn, createRoute } from "@shared/lib";
 import { Typography, typographyVariants } from "@shared/ui";
 
-import { TaskUpdateForm } from "../_components";
+import { TaskForm } from "../_components";
+import type { TTaskFormSchema } from "../lib";
 import { useTaskStore } from "../model";
 
 interface ITaskDetailsPageParams {
@@ -14,12 +16,17 @@ interface ITaskDetailsPageParams {
 }
 
 const TaskDetailsPage = () => {
-  const { currentTask, setCurrentTask } = useTaskStore();
+  const { tasks, currentTask, setCurrentTask, updateTask } = useTaskStore();
   const { taskId } = useParams() as unknown as ITaskDetailsPageParams;
+
+  const handleOnSubmit = (data: TTaskFormSchema) => {
+    updateTask({ uid: +taskId, ...data });
+    toast.success("Задача изменена!");
+  };
 
   useEffect(() => {
     setCurrentTask && setCurrentTask(+taskId);
-  }, [taskId]);
+  }, [taskId, tasks]);
 
   return (
     <div className='space-y-8'>
@@ -39,7 +46,9 @@ const TaskDetailsPage = () => {
       >
         <ArrowLeftIcon size={16} /> Назад
       </Link>
-      {currentTask && <TaskUpdateForm {...currentTask} />}
+      {currentTask && (
+        <TaskForm key='update-form' defaultValues={currentTask} handleOnSubmit={handleOnSubmit} />
+      )}
       {!currentTask && (
         <Typography variant='paragraph_16_medium' className='text-center'>
           Loading...
