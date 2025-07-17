@@ -14,8 +14,8 @@ export const getTasks = async (filters?: TTaskFilters) => {
       {}
     ) as unknown as TTaskFilters;
 
-    return api.get<IGetTaskResponse>("/task", { params });
+    return api.get<IGetTaskResponse>("/tasks", { params });
   }
 
-  return api.get<IGetTaskResponse>("/task");
+  return api.get<IGetTaskResponse>("/tasks");
 };

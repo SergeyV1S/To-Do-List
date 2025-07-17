@@ -5,4 +5,4 @@ import { api } from "../instance";
 interface IGetTaskByUidResponse extends IBaseApiResponse<ITask> {}
 
 export const getTaskByUid = async (taskUid: ITask["uid"]) =>
-  api.get<IGetTaskByUidResponse>(`task/${taskUid}`);
+  api.get<IGetTaskByUidResponse>(`tasks/${taskUid}`);
