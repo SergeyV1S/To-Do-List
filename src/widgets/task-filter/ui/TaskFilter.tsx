@@ -1,3 +1,6 @@
+import { useTaskStore } from "@entities/task";
+import type { TTaskFilters } from "@entities/task";
+
 import { useDebouncedInput } from "@shared/hooks";
 import {
   CancelSelect,
@@ -10,9 +13,6 @@ import {
   SelectTrigger,
   SelectValue
 } from "@shared/ui";
-
-import { useTaskStore } from "../model";
-import type { TTaskFilters } from "../types";
 
 export const TaskFilter = () => {
   const { taskFilters, setFilters } = useTaskStore();

@@ -1,8 +1,7 @@
 import { toast } from "sonner";
 
-import { useTaskStore } from "../model";
-import type { ITask } from "../types";
-import { TaskItem } from "./TaskItem";
+import { TaskItem, useTaskStore } from "@entities/task";
+import type { ITask } from "@entities/task";
 
 export const TaskList = () => {
   const { tasks, deleteTask } = useTaskStore();

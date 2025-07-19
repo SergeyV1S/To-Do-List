@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 
+import { TaskFilter } from "@widgets/task-filter";
+import { TaskList } from "@widgets/task-list";
+
+import { useTaskStore } from "@entities/task";
+
 import { PATHS } from "@shared/constants";
 import { createRoute } from "@shared/lib";
 import { Spinner, Typography } from "@shared/ui";
-
-import { TaskFilter, TaskList } from "../_components";
-import { useTaskStore } from "../model";
 
 const TasksPage = () => {
   const { tasks, taskFilters, getTaskLoading, getTasks } = useTaskStore();

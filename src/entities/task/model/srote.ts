@@ -4,7 +4,7 @@ import * as taskApi from "@shared/api";
 import type { TPatchUpdateTaskDto, TPostCreateTaskDto } from "@shared/api";
 import { handleError } from "@shared/helpers";
 
-import type { ITask, TTaskFilters } from "../types";
+import type { ITask, TTaskFilters } from "./models";
 
 interface ITaskState {
   getTaskLoading?: boolean;

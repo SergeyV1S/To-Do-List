@@ -15,8 +15,8 @@ import {
   Typography
 } from "@shared/ui";
 
-import { categoryVariants, priorityVariants, statusVariants } from "../constants";
-import type { ITask } from "../types";
+import { categoryVariants, priorityVariants, statusVariants } from "../constant";
+import type { ITask } from "../model";
 
 interface ITaskItemProps {
   task: ITask;

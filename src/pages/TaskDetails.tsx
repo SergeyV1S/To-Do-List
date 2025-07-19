@@ -3,13 +3,14 @@ import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
+import { TaskForm } from "@widgets/task-form";
+import type { TTaskFormSchema } from "@widgets/task-form";
+
+import { useTaskStore } from "@entities/task";
+
 import { PATHS } from "@shared/constants";
 import { cn, createRoute } from "@shared/lib";
 import { Spinner, typographyVariants } from "@shared/ui";
-
-import { TaskForm } from "../_components";
-import type { TTaskFormSchema } from "../lib";
-import { useTaskStore } from "../model";
 
 interface ITaskDetailsPageParams {
   taskUid: string;
@@ -29,7 +30,7 @@ const TaskDetailsPage = () => {
 
   useEffect(() => {
     getCurrentTask(taskUid);
-  }, [taskUid]);
+  }, []);
 
   return (
     <div className='space-y-8'>

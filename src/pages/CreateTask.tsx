@@ -2,19 +2,20 @@ import { ArrowLeftIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
+import { TaskForm } from "@widgets/task-form";
+import type { TTaskFormSchema } from "@widgets/task-form";
+
+import { useTaskStore } from "@entities/task";
+
 import { PATHS } from "@shared/constants";
 import { cn, createRoute } from "@shared/lib";
 import { typographyVariants } from "@shared/ui";
-
-import { TaskForm } from "../_components";
-import type { TTaskFormSchema } from "../lib";
-import { useTaskStore } from "../model";
 
 export const CreateTaskPage = () => {
   const { addTask } = useTaskStore();
   const navigate = useNavigate();
 
-  const handleOnSubmit = (data: TTaskFormSchema) => {
+  const createTask = (data: TTaskFormSchema) => {
     addTask(data).then(() => {
       toast.success("Задача создана!");
       navigate(PATHS.TASKS);
@@ -38,7 +39,7 @@ export const CreateTaskPage = () => {
           title: "",
           description: ""
         }}
-        handleOnSubmit={handleOnSubmit}
+        handleOnSubmit={createTask}
       />
     </div>
   );

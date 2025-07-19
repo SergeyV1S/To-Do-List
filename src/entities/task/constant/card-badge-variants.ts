@@ -2,7 +2,7 @@ import type { VariantProps } from "class-variance-authority";
 
 import type { badgeVariants } from "@shared/ui";
 
-import type { TCategory, TPriority, TStatus } from "../types";
+import type { TCategory, TPriority, TStatus } from "../model";
 
 type TVariant<Entity extends TCategory | TPriority | TStatus> = Record<
   Entity,

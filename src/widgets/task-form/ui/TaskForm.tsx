@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useTaskStore } from "@entities/task";
+
 import {
   Button,
   Form,
@@ -22,7 +24,6 @@ import {
 
 import type { TTaskFormSchema } from "../lib";
 import { taskFormSchema } from "../lib";
-import { useTaskStore } from "../model";
 
 interface ITaskFormProps {
   defaultValues: Partial<TTaskFormSchema>;

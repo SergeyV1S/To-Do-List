@@ -12,7 +12,10 @@
     "^(lucide-react|react|react-dom|react-router|@hookform/resolvers|axios|zod|react-hook-form|sonner|react-spinners)$",
     "<THIRD_PARTY_MODULES>",
     "^@app/(.*)$",
-    "^@modules/(.*)$",
+    "^@pages/(.*)$",
+    "^@widgets/(.*)$",
+    "^@features/(.*)$",
+    "^@entities/(.*)$",
     "^@shared/(.*)$",
     "^[./]"
   ],
