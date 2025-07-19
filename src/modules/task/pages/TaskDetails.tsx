@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { PATHS } from "@shared/constants";
 import { cn, createRoute } from "@shared/lib";
-import { Spinner, Typography, typographyVariants } from "@shared/ui";
+import { Spinner, typographyVariants } from "@shared/ui";
 
 import { TaskForm } from "../_components";
 import type { TTaskFormSchema } from "../lib";
@@ -33,13 +33,6 @@ const TaskDetailsPage = () => {
 
   return (
     <div className='space-y-8'>
-      <Typography
-        variant='title_h2'
-        tag='h1'
-        className='border-b-card-foreground border-b p-3 text-center'
-      >
-        Tasks Details
-      </Typography>
       <Link
         to={PATHS.TASKS}
         className={cn(

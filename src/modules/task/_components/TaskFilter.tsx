@@ -40,12 +40,12 @@ export const TaskFilter = () => {
         aria-labelledby='filters'
         className='flex items-center justify-between max-sm:justify-center'
       >
-        <div className='flex flex-wrap items-center gap-6 max-sm:flex-col max-sm:justify-center'>
+        <div className='grid w-full grid-cols-2 gap-6 md:grid-cols-4'>
           <Select
             value={taskFilters?.priority ?? ""}
             onValueChange={(priority) => onValueChangeHandler("priority", priority)}
           >
-            <SelectTrigger className='min-w-40'>
+            <SelectTrigger>
               <SelectValue placeholder='Filter by priority' />
             </SelectTrigger>
             <CancelSelect
@@ -65,7 +65,7 @@ export const TaskFilter = () => {
             value={taskFilters?.category ?? ""}
             onValueChange={(category) => onValueChangeHandler("category", category)}
           >
-            <SelectTrigger className='min-w-42'>
+            <SelectTrigger>
               <SelectValue placeholder='Filter by category' />
             </SelectTrigger>
             <CancelSelect
@@ -87,7 +87,7 @@ export const TaskFilter = () => {
             value={taskFilters?.status ?? ""}
             onValueChange={(status) => onValueChangeHandler("status", status)}
           >
-            <SelectTrigger className='min-w-28'>
+            <SelectTrigger>
               <SelectValue placeholder='Filter by status' />
             </SelectTrigger>
             <CancelSelect
@@ -107,7 +107,7 @@ export const TaskFilter = () => {
             value={taskFilters?.orderBy ?? ""}
             onValueChange={(orderBy) => onValueChangeHandler("orderBy", orderBy)}
           >
-            <SelectTrigger className='min-w-28'>
+            <SelectTrigger>
               <SelectValue placeholder='Order by' />
             </SelectTrigger>
             <CancelSelect

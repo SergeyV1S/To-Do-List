@@ -25,7 +25,7 @@ interface ITaskItemProps {
 
 export const TaskItem = ({ task, deleteTask }: ITaskItemProps) => (
   <Link to={`${PATHS.TASK_INFO}/${task.uid}`} className='w-full'>
-    <Card className='group relative duration-300 hover:origin-bottom hover:scale-105 hover:rotate-1 hover:shadow-2xl'>
+    <Card className='relative duration-300 hover:origin-bottom hover:scale-105 hover:rotate-1 hover:shadow-2xl'>
       <CardHeader>
         <CardTitle>{task.title}</CardTitle>
         {task.description && <CardDescription>{task.description}</CardDescription>}
@@ -42,7 +42,7 @@ export const TaskItem = ({ task, deleteTask }: ITaskItemProps) => (
           {formatDate(task.createdDate)}
         </Typography>
       </CardFooter>
-      <div className='absolute top-4 right-4 hidden group-hover:block'>
+      <div className='absolute top-4 right-4'>
         <Button
           onClick={(e) => {
             e.preventDefault();
@@ -50,6 +50,7 @@ export const TaskItem = ({ task, deleteTask }: ITaskItemProps) => (
           }}
           variant='destructive'
           size='icon'
+          className='!shadow-none'
         >
           <TrashIcon />
         </Button>

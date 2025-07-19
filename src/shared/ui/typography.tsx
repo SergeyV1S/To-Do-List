@@ -5,7 +5,7 @@ import { cn } from "@shared/lib";
 const typographyVariants = cva("font-inter tracking-normal", {
   variants: {
     variant: {
-      title_h1: "text-5xl leading-14 font-bold max-sm:text-3xl",
+      title_h1: "text-3xl leading-14 font-bold max-sm:text-xl",
       title_h2: "text-2xl leading-8 font-bold",
       title_h3: "text-xl leading-6 font-semibold",
       paragraph_16_medium: "text-base leading-6 font-medium",
