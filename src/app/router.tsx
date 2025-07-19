@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 
-import { createTaskRoute, taskDetailsRoute, tasksRoute } from "@modules/task";
+import { createTaskRoute, taskDetailsRoute, tasksRoute } from "@pages/index";
 
 import { AppLayout } from "./layouts/AppLayout";
 

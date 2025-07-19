@@ -13,9 +13,8 @@ const badgeVariants = cva(
         default: "bg-primary text-primary-foreground [a&]:hover:bg-primary/90 border-transparent",
         secondary:
           "bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90 border-transparent",
-        attention:
-          "bg-attention text-primary-foreground [a&]:hover:bg-attention/90 border-transparent",
-        verify: "bg-verify text-primary-foreground [a&]:hover:bg-verify/90 border-transparent",
+        attention: "bg-attention [a&]:hover:bg-attention/90 border-transparent text-white",
+        verify: "bg-verify [a&]:hover:bg-verify/90 border-transparent text-white",
         destructive:
           "bg-destructive [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 border-transparent text-white"
       }

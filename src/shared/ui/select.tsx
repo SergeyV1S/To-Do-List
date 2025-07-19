@@ -25,10 +25,12 @@ const SelectValue = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.V
 const SelectTrigger = ({
   className,
   size = "default",
+  arrow = true,
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "sm" | "default";
+  arrow?: boolean;
 }) => (
   <SelectPrimitive.Trigger
     data-slot='select-trigger'
@@ -41,9 +43,11 @@ const SelectTrigger = ({
     {...props}
   >
     {children}
-    <SelectPrimitive.Icon asChild>
-      <ChevronDownIcon className='size-4 opacity-50' />
-    </SelectPrimitive.Icon>
+    {arrow && (
+      <SelectPrimitive.Icon asChild>
+        <ChevronDownIcon className='size-4 opacity-50' />
+      </SelectPrimitive.Icon>
+    )}
   </SelectPrimitive.Trigger>
 );
 
@@ -160,7 +164,7 @@ const CancelSelect = ({ className, selectValue, ...props }: ICancelSelectProps) 
       <Button
         variant='destructive'
         size='small_icon'
-        className={cn("!absolute top-1/2 right-3 -translate-y-1/2", className)}
+        className={cn("!absolute top-1/2 right-8 -translate-y-1/2 !shadow-none", className)}
         {...props}
       >
         <XIcon className='size-3' />
